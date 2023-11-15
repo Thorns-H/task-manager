@@ -3,8 +3,12 @@ import sys
 import time
 import random
 
+import threading
+
 from imports.config import load_config
-from imports.terminal import display_bars, reset_color
+from imports.terminal import display_bars, display_processes, reset_color
+
+threads = []
 
 def main() -> None:
 
@@ -14,13 +18,40 @@ def main() -> None:
 
     num_cores = config['num_cores']
     num_ram = config['num_ram']
-    num_processes = config['num_processes']
+    num_processes = 0
+
+    # Pedimos al usuario la cantidad de procesos
+
+    while True:
+        try:
+            num_processes = int(input("Ingrese la cantidad de procesos: "))
+            if num_processes >= 1:
+                break
+            else:
+                print("Por favor, ingrese un número mayor o igual a 1.")
+        except ValueError:
+            print("Por favor, ingrese un número entero válido.")
+
+    # Creamos un diccionario para almacenar la información de cada proceso
+
+    processes = {}
+
+    # Por cada proceso, solicitamos el tamaño y lo agregamos al diccionario
+
+    for i in range(num_processes):
+        while True:
+            try:
+                process_size = int(input(f"Ingrese el tamaño del proceso {i + 1}: "))
+                break
+            except ValueError:
+                print("Por favor, ingrese un número entero válido para el tamaño del proceso.")
+
+        processes[i] = [process_size]
 
     # Creamos listas con la cantidad de barras.
 
     core_bars = [0] * num_cores
     ram_bars = [0] * num_ram
-    process_bars = [0] * num_processes
 
     # Iniciamos el ciclo principal.
 
@@ -33,9 +64,6 @@ def main() -> None:
 
         for i in range(num_ram):
             ram_bars[i] = random.randint(0, 15)
-
-        for i in range(num_processes):
-            process_bars[i] = random.randint(0, 20)
 
         # Imprimimos el label de los nucleos del procesador.
 
@@ -68,9 +96,6 @@ def main() -> None:
         # TODO: Falta agregar una función que siga la lógica de 'display_bars' pero
         # no tome un número random, sino un algoritmo como FCFS, RR o Queues.
 
-        for i in range(num_processes):
-            display_bars(i + 1, process_bars[i], i + 6, 30)
-        
-        time.sleep(1)
+        input()
 
 main()
