@@ -8,8 +8,7 @@ import random
 
 import threading
 
-from imports.config import load_config
-from imports.terminal import display_bars, display_processes, reset_color, important_refences
+import tkinter as tk
 
 # Codigo ASNI para resetear los colores usados con otras secuencias de escape.
 
@@ -47,6 +46,38 @@ def fill_bars(burst: int, line: int, column: int) -> None:
         sys.stdout.flush()
 
     sys.stdout.write(f'\033[{line};{61}H\033[32mDone{reset_color}\n')
+
+def update_clock(label: tk.Label) -> None:
+    label.config(text = f'Time: {important_refences[1]}s')
+    label.after(333, lambda: update_clock(label))
+def display_clock() -> None:
+
+    clock = tk.Tk()
+    clock.title("Global Time")
+
+    # Obtener las dimensiones de la pantalla
+
+    screen_width = clock.winfo_screenwidth()
+    screen_height = clock.winfo_screenheight()
+
+    # Configurar el tamaño de la ventana
+
+    clock_width = 300
+    clock_height = 200
+
+    x_pos = (screen_width - clock_width) // 2
+    y_pos = (screen_height - clock_height) // 2
+    
+    clock.geometry(f"{clock_width}x{clock_height}+{x_pos}+{y_pos}")
+
+    # Crear el label con texto grande y centrado
+
+    big_clock = tk.Label(clock, text = f"Time: 0s", font = ("Helvetica", 20))
+    big_clock.pack(pady = 50)
+
+    update_clock(big_clock)
+
+    clock.mainloop()
 
 def display_processes(processes: dict) -> None:
 
@@ -154,6 +185,9 @@ def main() -> None:
     threads.append(thread)
 
     thread = threading.Thread(target = display_processes, args = (processes,))
+    threads.append(thread)
+
+    thread = threading.Thread(target = display_clock)
     threads.append(thread)
 
     for thread in threads:
