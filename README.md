@@ -1,9 +1,7 @@
 # 💻 Task Manager Simulator (Terminal)
 
 ## Preview
-<p align="center">
-  <img src="https://i.ibb.co/FKk2J2F/Screenshot-18.png"/>
-</p>
+![](https://drive.google.com/uc?export=view&id=1Z97BgzI6VUYs6farN1XtUaq5aE8Al0jK)
 
 También aquí hay un [vídeo](https://gyazo.com/db8590ee1c663c6ed76ccb69405fa06c) del funcionamiento actual.
 
